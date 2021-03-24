@@ -28,5 +28,8 @@ if DEBUG:
 
 MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
