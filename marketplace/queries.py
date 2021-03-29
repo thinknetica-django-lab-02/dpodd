@@ -25,7 +25,7 @@ item2, _ = Goods.objects.get_or_create(
                                     title="Nike Running Shoes", description="A model for running",
                                     category=cat2, price=5000.0, seller=u_ivan,
                                     )
-item2, _ = Goods.objects.get_or_create(
+item3, _ = Goods.objects.get_or_create(
                                     title="Reebok Speed Shoes", description="A model for running",
                                     category=cat2, price=5550.0, seller=u_ivan,
                                     )
@@ -33,6 +33,7 @@ item2, _ = Goods.objects.get_or_create(
 item1.tags.add(t2)
 item2.tags.add(t1)
 item2.tags.add(t2)
+item3.tags.add(t2)
 
 items_of_category1 = Goods.objects.filter(category=cat1)
 items_of_category2 = Goods.objects.filter(category=cat2)
