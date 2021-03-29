@@ -59,6 +59,7 @@ class Goods(models.Model):
     title = models.CharField("item's title", max_length=150)
     description = models.TextField("item's description")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="item's category")
+    price = models.DecimalField("item's price (RUB)", max_digits=10, decimal_places=2, default=0.0)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='goods_sell', on_delete=models.CASCADE, null=True,
                                verbose_name="item's seller")
     customer = models.ForeignKey(Customer, related_name='goods_buy', on_delete=models.SET_NULL,
