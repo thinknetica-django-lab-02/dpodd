@@ -40,6 +40,9 @@ class Customer(models.Model):
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="related user model")
 
+    def __str__(self):
+        return self.user.username
+
 
 class Goods(models.Model):
     """
