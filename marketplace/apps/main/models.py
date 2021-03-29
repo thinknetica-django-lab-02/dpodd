@@ -65,6 +65,7 @@ class Goods(models.Model):
     customer = models.ForeignKey(Customer, related_name='goods_buy', on_delete=models.SET_NULL,
                                  null=True, verbose_name="item's customer")
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="item's tags")
+    created_on = models.DateTimeField("created on", auto_now_add=True)
 
     class Meta:
         verbose_name = 'an item of goods'
