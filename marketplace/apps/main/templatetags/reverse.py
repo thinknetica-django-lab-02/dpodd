@@ -6,7 +6,6 @@ register = template.Library()
 
 @register.filter
 def reverse(value, arg=None):
-    print(type(value))
     if not isinstance(value, SafeString):
         return "Error! A string should be provided"
     return value[::-1]
