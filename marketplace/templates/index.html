@@ -9,4 +9,8 @@
     <div style="background-color: green; height: 100px; width: 200px">{{turn_on_block}}</div>
 {% endif %}
 
+{% load server_time %}
+{% server_time as the_time %}
+<p>Server time: {{ the_time }}</p>
+
 {% endblock %}
