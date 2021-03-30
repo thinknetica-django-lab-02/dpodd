@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}List of all items of goods{% endblock %}
+
+{% block content %}
+    {% for item in object_list %}
+        <article>
+            <iiv class="card my-1">
+                <div class="row no-gutters">
+                    <div class="col-md-3" style="background-color: cornflowerblue;">
+                        <img class="card-img" alt="no image" />
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{% url "goods-detail" item.pk %}">{{ item.title }}</a></h4>
+
+                            <p class="card-text">{{ item.description|truncatewords:20 }}</p>
+                            {% if item.tags.exists %}
+                                Tags:
+                                {% for tag in item.tags.all %}
+                                       <span class="badge bg-primary">{{ tag.name }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

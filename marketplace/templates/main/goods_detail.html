@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}{{object.title}}{% endblock %}
+
+{% block content %}
+        <article>
+            <iiv class="card my-1">
+                <div class="row no-gutters">
+                    <div class="col col-lg-4 col-md-6 col-sm-12 col-12" style="background-color: cornflowerblue;">
+                        <img class="card-img-top" alt="no image" />
+                    </div>
+
+                    <div class="col col-lg-8 col-md-6">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ object.title }}</h2>
+
+                            <p class="card-text">{{ object.description|truncatewords:20 }}</p>
+                            {% if object.tags.exists %}
+                                Tags:
+                                {% for tag in object.tags.all %}
+                                       <span class="badge bg-primary">{{ tag.name }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+{% endblock %}
