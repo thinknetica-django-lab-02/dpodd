@@ -11,6 +11,11 @@
 
 {% load server_time %}
 {% server_time as the_time %}
-<p>Server time: {{ the_time }}</p>
+<h4>Server time:</h4>
+<p>{{ the_time }}</p>
+
+{% load reverse %}
+<h4>Text reversion:</h4>
+<p><span style="margin-right: 10px;">Hello, user!</span>{{ "Hello, user!"|reverse }}</p>
 
 {% endblock %}
