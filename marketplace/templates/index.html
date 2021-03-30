@@ -3,5 +3,10 @@
 {% block title %}123{% endblock %}
 
 {% block content %}
-<h1>Welcome!</h1>
+<h1>Welcome, {{ request.user }}!</h1>
+
+{% if turn_on_block %}
+    <div style="background-color: green; height: 100px; width: 200px">{{turn_on_block}}</div>
+{% endif %}
+
 {% endblock %}
