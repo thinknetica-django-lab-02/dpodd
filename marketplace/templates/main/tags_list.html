@@ -1,0 +1,13 @@
+<h4>Tags:</h4>
+
+<div class="row">
+    {% if tags_list.exists %}
+        {% for tag in tags_list %}
+            <div class="col">
+                <span class="badge bg-primary">{{ tag.name }}</span>
+            </div>
+        {% endfor %}
+    {% else %}
+    <em>No tags yet exist.</em>
+    {% endif %}
+</div>
