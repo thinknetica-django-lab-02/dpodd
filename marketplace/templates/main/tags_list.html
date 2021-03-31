@@ -1,10 +1,12 @@
 <h4>Tags:</h4>
 
 <div class="row">
-    {% if tags_list.exists %}
-        {% for tag in tags_list %}
+    {% if tag_list.exists %}
+        {% for tag in tag_list %}
             <div class="col">
-                <span class="badge bg-primary">{{ tag.name }}</span>
+                <a class="badge bg-primary badge-tag"
+                    href="{% url 'goods-list' %}?tag={{ tag.name | urlencode }}">{{ tag.name }}
+                </a>
             </div>
         {% endfor %}
     {% else %}

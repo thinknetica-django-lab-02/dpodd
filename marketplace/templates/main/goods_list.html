@@ -19,7 +19,9 @@
                             {% if item.tags.exists %}
                                 Tags:
                                 {% for tag in item.tags.all %}
-                                       <span class="badge bg-primary">{{ tag.name }}</span>
+                                    <a class="badge bg-primary badge-tag"
+                                        href="{% url 'goods-list' %}?tag={{ tag.name | urlencode }}">{{ tag.name }}
+                                    </a>
                                 {% endfor %}
                             {% endif %}
                         </div>
@@ -27,6 +29,14 @@
             </div>
         </article>
     {% endfor %}
+
+{% if not object_list and request_tags %}
+<h5>No items found with tags <strong>{{ request_tags }}</strong></h5>
+{% endif %}
+
+{% if not object_list and not request_tags %}
+<h5>something went wrong...</h5>
+{% endif %}
 
 <!--Pagination-->
 {% include 'main/pagination.html' %}
