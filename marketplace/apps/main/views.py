@@ -12,6 +12,7 @@ class IndexView(View):
 
 class GoodsItemsList(ListView):
     model = Goods
+    paginate_by = 10
     template_name = 'main/goods_list.html'
 
 
