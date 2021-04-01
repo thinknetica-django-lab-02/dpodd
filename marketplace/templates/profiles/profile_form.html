@@ -4,7 +4,7 @@
 
 <h1>Profile settings</h1>
 {% if request.user.is_authenticated %}
-    <form method="post" action="{% url 'profile' request.user.pk %}">
+    <form method="post" action="{% url 'profile' profile_pk %}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" class="btn btn-primary" value="Update">
