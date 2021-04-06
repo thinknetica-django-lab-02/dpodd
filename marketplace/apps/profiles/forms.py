@@ -1,5 +1,8 @@
+from datetime import date
+
 from django import forms
 from django.forms import inlineformset_factory
+from django.core.exceptions import ValidationError
 
 from .models import Profile, User
 
@@ -17,6 +20,25 @@ class ProfileUpdateForm(forms.ModelForm):
                 },
             ),
         }
+
+    @staticmethod
+    def calculate_age(birth_date):
+        today = date.today()
+        age = today.year - birth_date.year
+        full_year_passed = (today.month, today.day) < (birth_date.month, birth_date.day)
+        if not full_year_passed:
+            age -= 1
+        return age
+
+    # def clean(self):
+    #     date_of_birth = self.cleaned_data.get('birthday')
+    #     print("BIRTHDAY", date_of_birth)
+    #     print("AGE", self.calculate_age(date_of_birth))
+    #
+    #     if self.calculate_age(date_of_birth) < 18:
+    #         raise ValidationError("You must be at least 18 of age.")
+    #
+    #     return date_of_birth
 
 
 ProfileFormset = inlineformset_factory(User, Profile, form=ProfileUpdateForm, extra=1)

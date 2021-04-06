@@ -8,10 +8,19 @@
         <div class="alert alert-primary" role="alert">{{ message }}</div>
     {% endfor%}
 
+    {{ profileformset.birthday }}
+    {{ profileformset.errors }}
+    {{ profileformset.non_field_errors }}
+    {{ form.non_field_errors }}
+    {{ form.errors }}
+
     <form method="post" action="{% url 'profiles:profile' request.user.pk %}">
         {% csrf_token %}
 
+
         {{ form.as_p }}
+
+        {{ profileformset.management_form }}
 
         {{ profileformset.as_p }}
 
