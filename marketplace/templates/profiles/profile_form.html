@@ -10,11 +10,11 @@
 
     <form method="post" action="{% url 'profiles:profile' request.user.pk %}">
         {% csrf_token %}
-
-        {{ form.as_p }}
-
-        {{ profileformset.as_p }}
-
+        <table>
+        {{ form.as_table }}
+        {{ profileformset.management_form }}
+        {{ profileformset.as_table }}
+        </table>
         <input type="submit" class="btn btn-primary" value="Update">
     </form>
 {% else %}

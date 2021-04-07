@@ -6,4 +6,4 @@ User = get_user_model()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    birthday = models.DateTimeField(null=True)
+    birthday = models.DateField(null=True)

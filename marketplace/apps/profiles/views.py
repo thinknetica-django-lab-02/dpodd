@@ -16,10 +16,13 @@ class ProfileView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if self.request.POST:
-            context['profileformset'] = ProfileFormset(self.request.POST)
+            context['profileformset'] = ProfileFormset(self.request.POST, instance=self.request.user)
         else:
-            context['profileformset'] = ProfileFormset()
+            profileformset = ProfileFormset(instance=self.request.user)
+            profileformset.can_delete = False
+            context['profileformset'] = profileformset
         return context
 
     def form_valid(self, form):
@@ -29,8 +32,13 @@ class ProfileView(UpdateView):
         self.object = form.save()
 
         if profileformset.is_valid():
-            profileformset.instance = self.object
-            profileformset.save()
+            profiles_list = profileformset.save(commit=False)
 
-        messages.success(self.request, 'Profile details updated.')
+            if profiles_list:
+                instance = profiles_list.pop()
+                instance.user = self.request.user
+                instance.save()
+
+        messages.success(self.request, 'Profile details has been updated.')
+
         return super().form_valid(form)
