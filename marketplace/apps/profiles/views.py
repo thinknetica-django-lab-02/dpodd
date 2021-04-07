@@ -1,44 +1,59 @@
-from django.shortcuts import render, reverse
 from django.views.generic import UpdateView
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
-from .models import Profile, User
-from .forms import ProfileUpdateForm, ProfileFormset
+from .models import User
+from .forms import ProfileFormset
 
 
 class ProfileView(UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'email']
     template_name = 'profiles/profile_form.html'
+    success_url = '/accounts/profile/'
 
-    def get_success_url(self):
-        return reverse('profiles:profile', kwargs={'pk': self.kwargs['pk']})
+    def get_object(self, request):
+        """Get user object from request."""
+        return request.user
 
     def get_context_data(self, **kwargs):
+        """Add new form to a context."""
         context = super().get_context_data(**kwargs)
 
-        if self.request.POST:
-            context['profileformset'] = ProfileFormset(self.request.POST, instance=self.request.user)
-        else:
-            profileformset = ProfileFormset(instance=self.request.user)
-            profileformset.can_delete = False
-            context['profileformset'] = profileformset
+        profileformset = ProfileFormset(instance=self.get_object(kwargs['request']))
+        profileformset.can_delete = False
+        context['profileformset'] = profileformset
+
         return context
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        profileformset = context.get('profileformset')
+    def get(self, request, *args, **kwargs):
+        """Process a GET request.
+        Overridden only because of self.get_object(request)
+        """
+        self.object = self.get_object(request)
+        return self.render_to_response(self.get_context_data(request=request))
 
-        self.object = form.save()
-
-        if profileformset.is_valid():
-            profiles_list = profileformset.save(commit=False)
-
-            if profiles_list:
-                instance = profiles_list.pop()
-                instance.user = self.request.user
-                instance.save()
-
+    def form_valid_formset(self, form, formset):
+        """Validate the inline form and save both forms provided."""
+        if formset.is_valid():
+            formset.save()
+        else:
+            messages.error(self.request, 'Incorrect data provided.')
+            return HttpResponseRedirect(self.get_success_url())
+        form.save()
         messages.success(self.request, 'Profile details has been updated.')
+        return HttpResponseRedirect(self.get_success_url())
 
-        return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        """Process a POST request.
+        Validate the main form anf create an instance of the inline formset with POST data.
+        """
+        self.object = self.get_object(request)
+
+        form = self.get_form()
+        profile_form = ProfileFormset(self.request.POST, self.request.FILES, instance=self.object)
+        if form.is_valid():
+            return self.form_valid_formset(form, profile_form)
+        else:
+            messages.error(self.request, 'Incorrect data provided.')
+            return self.form_invalid(form)

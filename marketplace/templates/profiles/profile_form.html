@@ -8,7 +8,7 @@
         <div class="alert alert-primary" role="alert">{{ message }}</div>
     {% endfor%}
 
-    <form method="post" action="{% url 'profiles:profile' request.user.pk %}">
+    <form method="post" action="{% url 'profiles:profile' %}">
         {% csrf_token %}
         <table>
         {{ form.as_table }}
