@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 class Tag(models.Model):
@@ -73,6 +74,9 @@ class Goods(models.Model):
 
     def __str__(self):
         return self.title[:30]
+
+    def get_absolute_url(self):
+        return reverse('goods-detail', args=[str(self.pk)])
 
     @property
     def is_ordered(self):

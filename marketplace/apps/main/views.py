@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import View, ListView, DetailView
+from django.views.generic.edit import CreateView
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Goods, Tag
+from .forms import AddItemOfGoodsForm
 
 
 class IndexView(View):
@@ -43,3 +46,14 @@ class GoodsItemsList(ListView):
 class GoodsDetailView(DetailView):
     model = Goods
     template_name = 'main/goods_detail.html'
+
+
+class AddItemOfGoodsView(LoginRequiredMixin, CreateView):
+    model = Goods
+    form_class = AddItemOfGoodsForm
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.seller = self.request.user
+        instance.save()
+        return super().form_valid(form)
