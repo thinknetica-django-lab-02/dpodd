@@ -76,7 +76,7 @@ class Goods(models.Model):
         return self.title[:30]
 
     def get_absolute_url(self):
-        return reverse('goods-detail', args=[str(self.pk)])
+        return reverse('main:goods-detail', args=[str(self.pk)])
 
     @property
     def is_ordered(self):

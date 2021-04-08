@@ -23,8 +23,13 @@
                                 {% endfor %}
                             {% endif %}
                         </div>
+                    {% if user == object.seller %}
+                        <a class="btn btn-outline-primary" type="submit" role="button" href="{% url 'main:goods-edit' object.pk %}">Edit</a>
+                    {% endif %}
                     </div>
                 </div>
             </div>
+
         </article>
+
 {% endblock %}

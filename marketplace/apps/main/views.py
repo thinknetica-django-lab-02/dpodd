@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Goods, Tag
-from .forms import AddItemOfGoodsForm
+from .forms import AddItemOfGoodsForm, EditItemOfGoodsForm
 
 
 class IndexView(View):
@@ -57,3 +57,16 @@ class AddItemOfGoodsView(LoginRequiredMixin, CreateView):
         instance.seller = self.request.user
         instance.save()
         return super().form_valid(form)
+
+
+class EditItemOfGoodsView(LoginRequiredMixin, UpdateView):
+    model = Goods
+    form_class = EditItemOfGoodsForm
+    template_name = "main/edit_goods.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        """Override to assure that only owner can edit an item of goods."""
+        obj = self.get_object()
+        if obj.seller != request.user:
+            return redirect(obj)
+        return super().dispatch(request, *args, **kwargs)
