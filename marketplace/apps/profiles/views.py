@@ -20,9 +20,8 @@ class ProfileView(UpdateView):
         """Add new form to a context."""
         context = super().get_context_data(**kwargs)
 
-        profileformset = ProfileFormset(instance=self.get_object(kwargs['request']))
-        profileformset.can_delete = False
-        context['profileformset'] = profileformset
+        if not 'profileformset' in kwargs:
+            context['profileformset'] = ProfileFormset(instance=self.get_object(kwargs['request']))
 
         return context
 
@@ -39,7 +38,8 @@ class ProfileView(UpdateView):
             formset.save()
         else:
             messages.error(self.request, 'Incorrect data provided.')
-            return HttpResponseRedirect(self.get_success_url())
+            return self.formset_invalid(form, formset)
+
         form.save()
         messages.success(self.request, 'Profile details has been updated.')
         return HttpResponseRedirect(self.get_success_url())
@@ -57,3 +57,8 @@ class ProfileView(UpdateView):
         else:
             messages.error(self.request, 'Incorrect data provided.')
             return self.form_invalid(form)
+
+    def formset_invalid(self, form, profile_form):
+        """Renders template with errors if the formset validation fails."""
+        return self.render_to_response(self.get_context_data(request=self.request, form=form,
+                                                             profileformset=profile_form))
