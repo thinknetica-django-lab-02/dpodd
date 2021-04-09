@@ -12,6 +12,7 @@ DATABASES = {
 
 INSTALLED_APPS += [
     'apps.main',
+    'apps.profiles',
     ]
 
 # for django-debug-toolbar
