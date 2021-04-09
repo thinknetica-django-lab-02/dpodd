@@ -1,3 +1,5 @@
+{% load thumbnail %}
+
 <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="{% url 'main:index' %}">Marketplace</a>
@@ -27,7 +29,15 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="/">{{ request.user }}</a>
+            <div class="row">
+                {% thumbnail request.user.profile.avatar "1000" crop="center" as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" class="img-fluid avatar-img"
+                                 height="{{ im.height }}" alt="no image" >
+                {% endthumbnail %}
+                <a href="{% url "profiles:profile" %}" class="col">
+                    <span class="nav-link header-username">{{ request.user }}</span>
+                </a>
+            </div>
         </li>
       </ul>
     </div>
