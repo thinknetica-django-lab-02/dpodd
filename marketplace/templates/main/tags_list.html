@@ -1,0 +1,15 @@
+<h4>Tags:</h4>
+
+<div class="row">
+    {% if tag_list.exists %}
+        {% for tag in tag_list %}
+            <div class="col">
+                <a class="badge bg-primary badge-tag"
+                    href="{% url 'goods-list' %}?tag={{ tag.name | urlencode }}">{{ tag.name }}
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+    <em>No tags yet exist.</em>
+    {% endif %}
+</div>
