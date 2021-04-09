@@ -1,12 +1,13 @@
 from django.views.generic import UpdateView
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
 from .forms import ProfileFormset
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'email']
     template_name = 'profiles/profile_form.html'
