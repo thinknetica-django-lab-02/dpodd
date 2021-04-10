@@ -8,6 +8,14 @@
         <div class="alert alert-primary" role="alert">{{ message }}</div>
     {% endfor%}
 
+    {% if profileformset.errors %}
+        {% for field in profileformset %}
+            {% for key, value in field.errors.items %}
+                <div class="alert alert-danger" role="alert">{{ value }}</div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
     <form method="post" action="{% url 'profiles:profile' %}">
         {% csrf_token %}
         <table>

@@ -23,9 +23,7 @@ class ProfileView(UpdateView):
         context = super().get_context_data(**kwargs)
 
         if 'profileformset' not in kwargs:
-            profile_form = ProfileFormset(instance=self.get_object())
-            profile_form.can_delete = False
-            context['profileformset'] = profile_form
+            context['profileformset'] = ProfileFormset(instance=self.get_object())
 
         return context
 
