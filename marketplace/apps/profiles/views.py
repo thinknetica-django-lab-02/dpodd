@@ -1,14 +1,14 @@
 from django.views.generic import UpdateView
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
 
-from .models import User
-from .forms import ProfileFormset
+from apps.profiles.forms import ProfileFormset
 
 
 class ProfileView(UpdateView):
     """A view for editing user profile at `/accounts/profile/`."""
-    model = User
+    model = get_user_model()
     fields = ['first_name', 'last_name', 'email']
     template_name = 'profiles/profile_form.html'
     success_url = '/accounts/profile/'
