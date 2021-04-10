@@ -2,13 +2,18 @@
 
 {% block title %}List of all items of goods{% endblock %}
 
+{% load thumbnail %}
+
 {% block content %}
     {% for item in object_list %}
         <article>
             <iiv class="card my-1">
                 <div class="row no-gutters">
                     <div class="col-md-3" style="background-color: cornflowerblue;">
-                        <img class="card-img" alt="no image" />
+                        {% thumbnail item.image "1000" crop="center" as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" class="card-img-left  img-fluid"
+                                 height="{{ im.height }}" alt="no image">
+                        {% endthumbnail %}
                     </div>
 
                     <div class="col-md-8">

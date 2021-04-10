@@ -2,12 +2,17 @@
 
 {% block title %}{{object.title}}{% endblock %}
 
+{% load thumbnail %}
+
 {% block content %}
         <article>
             <iiv class="card my-1">
                 <div class="row no-gutters">
                     <div class="col col-lg-4 col-md-6 col-sm-12 col-12" style="background-color: cornflowerblue;">
-                        <img class="card-img-top" alt="no image" />
+                        {% thumbnail object.image "1000" crop="center" as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" class="card-img-top  img-fluid"
+                                 height="{{ im.height }}" alt="no image">
+                        {% endthumbnail %}
                     </div>
 
                     <div class="col col-lg-8 col-md-6">

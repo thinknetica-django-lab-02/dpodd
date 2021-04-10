@@ -1,15 +1,18 @@
-from django.forms import ModelForm
+from django import forms
 
 from .models import Goods
 
 
-class AddItemOfGoodsForm(ModelForm):
+class AddItemOfGoodsForm(forms.ModelForm):
     class Meta:
         model = Goods
-        fields = ['title', 'description', 'category', 'price']
+        fields = ['title', 'description', 'category', 'price', 'image']
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control', 'required': False}),
+        }
 
 
-class EditItemOfGoodsForm(ModelForm):
+class EditItemOfGoodsForm(forms.ModelForm):
     class Meta:
         model = Goods
-        fields = ['title', 'description', 'category', 'price']
+        fields = ['title', 'description', 'category', 'price', 'image']

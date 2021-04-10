@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 
+from sorl.thumbnail import ImageField
+
 
 class Tag(models.Model):
     """
@@ -65,6 +67,7 @@ class Goods(models.Model):
                                verbose_name="item's seller")
     customer = models.ForeignKey(Customer, related_name='goods_buy', on_delete=models.SET_NULL,
                                  null=True, verbose_name="item's customer")
+    image = ImageField(upload_to='goods', null=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="item's tags")
     created_on = models.DateTimeField("created on", auto_now_add=True)
 

@@ -11,3 +11,7 @@ body {
 .badge-tag:hover {
   color: white;
 }
+.avatar-img {
+  background-image: url("http://placehold.it/40x40");
+  max-width: 40px;
+}

@@ -16,7 +16,7 @@
         {% endfor %}
     {% endif %}
 
-    <form method="post" action="{% url 'profiles:profile' %}">
+    <form method="post" action="{% url 'profiles:profile' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
         {{ form.as_table }}

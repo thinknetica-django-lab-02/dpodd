@@ -5,7 +5,7 @@
 {% block content %}
 <h2>Edit Goods</h2>
 
-    <form method="post" action="{% url 'main:goods-edit' object.pk %}">
+    <form method="post" action="{% url 'main:goods-edit' object.pk %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save" class="btn btn-primary">
