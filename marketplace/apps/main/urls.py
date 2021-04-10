@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import IndexView, GoodsItemsList, GoodsDetailView
+from apps.main.views import IndexView, GoodsItemsList, GoodsDetailView
 
 
 urlpatterns = [
