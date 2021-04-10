@@ -14,48 +14,41 @@ class ProfileView(UpdateView):
     success_url = '/accounts/profile/'
 
     def get_object(self, **kwargs):
-        """Get user object from the request. Overridden because we don't need to hit the database again, we already have
-        the `User` object in `self.request'."""
+        """Get User object for Profile view.
+        Overridden because there is no `pk` or `slug` in the Profile url."""
         return self.request.user
 
     def get_context_data(self, **kwargs):
         """Add new form to a context."""
         context = super().get_context_data(**kwargs)
 
-        profileformset = ProfileFormset(instance=self.get_object(kwargs['request']))
-        profileformset.can_delete = False
-        context['profileformset'] = profileformset
+        if 'profileformset' not in kwargs:
+            profileformset = ProfileFormset(instance=self.get_object())
+            profileformset.can_delete = False
+            context['profileformset'] = profileformset
 
         return context
 
-    def get(self, request, *args, **kwargs):
-        """Process a GET request.
-        Overridden only because of self.get_object(request)
-        """
-        self.object = self.get_object()
-        return self.render_to_response(self.get_context_data(request=request))
+    def form_valid(self, form):
+        """If the main form is valid, validate the inline form."""
+        # instantiate an inline form with POST data:
+        profile_form = ProfileFormset(self.request.POST, self.request.FILES, instance=self.object)
 
-    def form_valid(self, form, formset):
-        """Validate the inline form and save both forms provided."""
-        if formset.is_valid():
-            formset.save()
+        if profile_form.is_valid():
+            profile_form.save()
         else:
-            messages.error(self.request, 'Incorrect data provided.')
-            return HttpResponseRedirect(self.get_success_url())
+            self.profile_form_invalid(form, profile_form)
+
         form.save()
         messages.success(self.request, 'Profile details has been updated.')
         return HttpResponseRedirect(self.get_success_url())
 
-    def post(self, request, *args, **kwargs):
-        """Process a POST request.
-        Validate the main form anf create an instance of the inline formset with POST data.
-        """
-        self.object = self.get_object()
+    def profile_form_invalid(self, form, profile_form):
+        """Render the profile page with our form instances."""
+        messages.error(self.request, 'Incorrect data provided.')
+        return self.render_to_response(self.get_context_data(form=form, profileformset=profile_form))
 
-        form = self.get_form()
-        profile_form = ProfileFormset(self.request.POST, self.request.FILES, instance=self.object)
-        if form.is_valid():
-            return self.form_valid(form, profile_form)
-        else:
-            messages.error(self.request, 'Incorrect data provided.')
-            return self.form_invalid(form)
+    def form_invalid(self, form):
+        """Process an invalid main form. Overridden only because of the message."""
+        messages.error(self.request, 'Incorrect data provided.')
+        return super().form_invalid(form)
