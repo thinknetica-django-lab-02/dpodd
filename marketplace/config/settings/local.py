@@ -34,3 +34,4 @@ STATICFILES_DIRS = [
     ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+LOGIN_URL = '/accounts/login/'

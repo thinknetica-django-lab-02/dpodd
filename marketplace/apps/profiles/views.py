@@ -2,11 +2,12 @@ from django.views.generic import UpdateView
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.profiles.forms import ProfileFormset
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     """A view for editing user profile at `/accounts/profile/`."""
     model = get_user_model()
     fields = ['first_name', 'last_name', 'email']
