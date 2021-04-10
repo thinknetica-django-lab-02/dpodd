@@ -13,14 +13,15 @@
 
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h4 class="card-title"><a href="{% url "goods-detail" item.pk %}">{{ item.title }}</a></h4>
+                            <h4 class="card-title"><a href="{% url "main:goods-detail" item.pk %}">{{ item.title }}</a></h4>
+                            <p class="card-text"><small class="text-muted">Seller: {{ item.seller }}</small></p>
 
                             <p class="card-text">{{ item.description|truncatewords:20 }}</p>
                             {% if item.tags.exists %}
                                 Tags:
                                 {% for tag in item.tags.all %}
                                     <a class="badge bg-primary badge-tag"
-                                        href="{% url 'goods-list' %}?tag={{ tag.name | urlencode }}">{{ tag.name }}
+                                        href="{% url 'main:goods-list' %}?tag={{ tag.name | urlencode }}">{{ tag.name }}
                                     </a>
                                 {% endfor %}
                             {% endif %}
