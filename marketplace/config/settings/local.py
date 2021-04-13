@@ -34,4 +34,18 @@ STATICFILES_DIRS = [
     ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
 LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': env('client_id'),
+            'secret': env('secret'),
+            'key': ''
+        }
+    }
+}
