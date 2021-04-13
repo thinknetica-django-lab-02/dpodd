@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 
 from apps.main.models import Goods, Tag
 from apps.main.forms import AddItemOfGoodsForm, EditItemOfGoodsForm
@@ -52,9 +53,10 @@ class GoodsDetailView(DetailView):
     template_name = 'main/goods_detail.html'
 
 
-class AddItemOfGoodsView(LoginRequiredMixin, CreateView):
+class AddItemOfGoodsView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Goods
     form_class = AddItemOfGoodsForm
+    permission_required = 'main.add_goods'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -63,10 +65,11 @@ class AddItemOfGoodsView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class EditItemOfGoodsView(LoginRequiredMixin, UpdateView):
+class EditItemOfGoodsView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Goods
     form_class = EditItemOfGoodsForm
     template_name = "main/edit_goods.html"
+    permission_required = 'main.change_goods'
 
     def dispatch(self, request, *args, **kwargs):
         """Override to assure that only owner can edit an item of goods."""

@@ -28,7 +28,7 @@
                                 {% endfor %}
                             {% endif %}
                         </div>
-                    {% if user == object.seller %}
+                    {% if user == object.seller and perms.main.add_goods %}
                         <a class="btn btn-outline-primary" type="submit" role="button" href="{% url 'main:goods-edit' object.pk %}">Edit</a>
                     {% endif %}
                     </div>

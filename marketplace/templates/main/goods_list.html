@@ -5,6 +5,14 @@
 {% load thumbnail %}
 
 {% block content %}
+
+    {% if perms.main.add_goods %}
+    <p>
+        <a class="btn btn-primary btn-lg btn-block" type="submit" role="button" href="{% url 'main:goods-add' %}">Add</a>
+    </p>
+    {% endif %}
+
+
     {% for item in object_list %}
         <article>
             <iiv class="card my-1">
