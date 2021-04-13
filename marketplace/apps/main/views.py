@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from apps.main import Goods, Tag
+from apps.main.models import Goods, Tag
 from apps.main.forms import AddItemOfGoodsForm, EditItemOfGoodsForm
 
 
