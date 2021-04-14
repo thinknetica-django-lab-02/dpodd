@@ -12,7 +12,6 @@ def send_mail_when_goods_add(sender, instance, created, **kwargs):
         subscribers = Subscriber.objects.select_related('user').all()
         for subscriber in subscribers:
             if subscriber.user.email:
-                print(subscriber.user.username, sep='\n')
                 send_mail(
                     "NEW item added",
                     f"{instance.title} has been added to the site.",
