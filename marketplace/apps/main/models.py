@@ -84,3 +84,13 @@ class Goods(models.Model):
     @property
     def is_ordered(self):
         return self.customer is not None
+
+
+class Subscriber(models.Model):
+    """
+        Subscriber is a user that receive email notification when Goods collection changes.
+
+        Attributes:
+            user (class User): A subscribed user.
+        """
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="subscribed user")
