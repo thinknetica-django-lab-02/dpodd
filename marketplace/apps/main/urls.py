@@ -1,6 +1,7 @@
 from django.urls import path
 
 from apps.main import views
+from apps.main.periodic_tasks import start_scheduler
 
 
 app_name = 'main'
@@ -12,3 +13,7 @@ urlpatterns = [
     path('goods/<int:pk>/edit', views.EditItemOfGoodsView.as_view(), name='goods-edit'),
     path('goods/add/', views.AddItemOfGoodsView.as_view(), name='goods-add'),
 ]
+
+# start scheduler here to avoid duplication of threads in development server (as opposed to doing this in `ready()`
+# method in apps.py)
+start_scheduler()
