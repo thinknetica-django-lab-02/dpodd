@@ -1,8 +1,8 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.core.mail import send_mail
 
 from apps.main.models import Goods, Subscriber
+from .tasks import notify_new_item_added
 
 
 @receiver(post_save, sender=Goods)
@@ -12,10 +12,5 @@ def send_mail_when_goods_add(sender, instance, created, **kwargs):
         subscribers = Subscriber.objects.select_related('user').all()
         for subscriber in subscribers:
             if subscriber.user.email:
-                send_mail(
-                    "NEW item added",
-                    f"{instance.title} has been added to the site.",
-                    'from@example.oom',
-                    [subscriber.user.email],
-                    fail_silently=True
-                )
+                # async task:
+                notify_new_item_added.delay(instance.title, subscriber.user.email)
