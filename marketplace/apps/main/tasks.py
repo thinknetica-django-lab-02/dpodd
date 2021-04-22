@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.conf import settings
 
+from pytz import UTC
+
 from config import celery_app
 from apps.main.models import Goods, Subscriber
 
