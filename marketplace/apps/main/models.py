@@ -94,3 +94,15 @@ class Subscriber(models.Model):
             user (class User): A subscribed user.
         """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="subscribed user")
+
+
+class SMSLog(models.Model):
+    """
+    A model for saving SMS logs from Vonage.
+
+    Attributes:
+        code (4-digit int): A verification code that was sent to user via SMS provider.
+        response (json): A json response from SMS provider.
+    """
+    code = models.IntegerField(verbose_name="verification code")
+    response = models.JSONField(verbose_name="json response from SMS provider")

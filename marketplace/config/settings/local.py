@@ -73,3 +73,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 # default email to use in FROM field
 EMAIL_DEFAULT_FROM = "noreply@marketplace.example.com"
+
+# default settings for sms messages
+SMS_FROM_DEFAULT = "Marketplace"
+SMS_PHONE_NUMBER_TEST = env("developer_phone_number")
