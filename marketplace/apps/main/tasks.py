@@ -69,12 +69,5 @@ def send_test_sms():
         }
     )
 
-    # some prints to celery console
-    print(responseData)
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-
     smslog = SMSLog(code=code, response=json.dumps(responseData))
     smslog.save()

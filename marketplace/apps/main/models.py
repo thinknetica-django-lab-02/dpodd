@@ -106,3 +106,4 @@ class SMSLog(models.Model):
     """
     code = models.IntegerField(verbose_name="verification code")
     response = models.JSONField(verbose_name="json response from SMS provider")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="code created")
