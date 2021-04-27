@@ -53,6 +53,7 @@ SOCIALACCOUNT_PROVIDERS = {
 REDIS_HOST = '0.0.0.0'
 REDIS_PORT = '6379'
 
+# Cache backend
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
