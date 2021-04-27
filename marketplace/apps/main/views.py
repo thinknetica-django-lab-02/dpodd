@@ -3,6 +3,9 @@ from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.conf import settings
 
 
 from apps.main.models import Goods, Tag
@@ -47,6 +50,7 @@ class GoodsItemsList(ListView):
         return queryset
 
 
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class GoodsDetailView(DetailView):
     """A detail view for an item of goods."""
     model = Goods
