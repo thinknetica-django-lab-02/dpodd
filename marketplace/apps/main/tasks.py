@@ -68,6 +68,6 @@ def send_test_sms():
             "text": f"You verification code is {code}.",
         }
     )
-
+    # !
     smslog = SMSLog(code=code, response=json.dumps(responseData))
     smslog.save()
