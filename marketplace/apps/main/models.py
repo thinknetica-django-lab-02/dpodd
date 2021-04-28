@@ -70,6 +70,7 @@ class Goods(models.Model):
     image = ImageField(upload_to='goods', null=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="item's tags")
     created_on = models.DateTimeField("created on", auto_now_add=True)
+    viewed = models.IntegerField("views count", default=0)
 
     class Meta:
         verbose_name = 'an item of goods'
