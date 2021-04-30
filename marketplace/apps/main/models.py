@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 
 from sorl.thumbnail import ImageField
+from autoslug import AutoSlugField
 
 
 class Tag(models.Model):
@@ -47,6 +48,14 @@ class Customer(models.Model):
         return self.user.username
 
 
+def populate_slug_from_title(instance):
+    """If user creates an item of Goods with a title 'add', URL dispatcher will work incorrectly.
+    This util function fixes that."""
+    if instance.title in ['add', 'Add']:
+        return 'add_'
+    return instance.title
+
+
 class Goods(models.Model):
     """
     A model that represents an item of goods
@@ -70,6 +79,8 @@ class Goods(models.Model):
     image = ImageField(upload_to='goods', null=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name="item's tags")
     created_on = models.DateTimeField("created on", auto_now_add=True)
+    viewed = models.IntegerField(default=0)
+    slug = AutoSlugField(populate_from=populate_slug_from_title, unique=True)
 
     class Meta:
         verbose_name = 'an item of goods'
@@ -79,7 +90,7 @@ class Goods(models.Model):
         return self.title[:30]
 
     def get_absolute_url(self):
-        return reverse('main:goods-detail', args=[str(self.pk)])
+        return reverse('main:goods-detail', args=[self.slug])
 
     @property
     def is_ordered(self):

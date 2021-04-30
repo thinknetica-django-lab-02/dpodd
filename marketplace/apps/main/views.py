@@ -52,6 +52,9 @@ class GoodsDetailView(DetailView):
     model = Goods
     template_name = 'main/goods_detail.html'
 
+    def get_object(self, queryset=None):
+        return Goods.objects.get(slug=self.kwargs.get("slug"))
+
 
 class AddItemOfGoodsView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Goods

@@ -26,7 +26,7 @@
 
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h4 class="card-title"><a href="{% url "main:goods-detail" item.pk %}">{{ item.title }}</a></h4>
+                            <h4 class="card-title"><a href="{% url "main:goods-detail" item.slug %}">{{ item.title }}</a></h4>
                             <p class="card-text"><small class="text-muted">Seller: {{ item.seller }}</small></p>
 
                             <p class="card-text">{{ item.description|truncatewords:20 }}</p>
@@ -49,7 +49,7 @@
 {% endif %}
 
 {% if not object_list and not request_tags %}
-<h5>something went wrong...</h5>
+<h5>No items.</h5>
 {% endif %}
 
 <!--Pagination-->
