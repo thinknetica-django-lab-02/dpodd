@@ -52,7 +52,7 @@ def populate_slug_from_title(instance):
     """If user creates an item of Goods with a title 'add', URL dispatcher will work incorrectly.
     This util function fixes that."""
     if instance.title in ['add', 'Add']:
-        return 'add_'
+        return '_add'
     return instance.title
 
 
