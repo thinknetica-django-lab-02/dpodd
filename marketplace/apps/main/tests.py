@@ -27,13 +27,13 @@ class GoodsListViewTests(TestCase):
         )
         item1.tags.add(tag1)
 
-        response = self.client.get(reverse('main:goods-list') + f'?tag={tag1.name}' )
+        response = self.client.get(reverse('main:goods-list') + f'?tag={tag1.name}')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Item #1")
 
     def test_items_not_found_by_tag(self):
         """Filter by non-existent tag; a message should be shown."""
-        item1 = Goods.objects.create(
+        Goods.objects.create(
             title="Item #1",
         )
 
@@ -210,7 +210,7 @@ def test_items_found_by_tag(client):
 @pytest.mark.django_db
 def test_items_not_found_by_tag(client):
     """Filter by non-existent tag; a message should be shown."""
-    item1 = Goods.objects.create(
+    Goods.objects.create(
         title="Item #1",
     )
 
