@@ -14,3 +14,4 @@ Celery==5.0.5
 apscheduler==3.7.0
 django-autoslug==1.9.8
 pytest-django==4.2.0
+flake8==3.9.1
