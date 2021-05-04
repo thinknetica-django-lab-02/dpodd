@@ -1,3 +1,5 @@
+import pytest
+
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -179,3 +181,54 @@ class EditItemOfGoodsViewTests(TestCase):
 
         response = self.client.get(reverse('main:goods-edit', kwargs={'slug': self.item.slug}))
         self.assertEqual(response.status_code, 200)
+
+# Pytest version of the same tests (some of them)
+
+
+@pytest.mark.django_db
+def test_no_items_in_db(client):
+    """If there is no items in DB, a placeholder should be shown."""
+    response = client.get(reverse('main:goods-list'))
+    assert response.status_code == 200
+    assert "No items" in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_items_found_by_tag(client):
+    """ListView can filter items by tag in query string."""
+    tag1 = Tag.objects.create(name="tag_1")
+    item1 = Goods.objects.create(
+        title="Item #1",
+    )
+    item1.tags.add(tag1)
+
+    response = client.get(reverse('main:goods-list') + f'?tag={tag1.name}')
+    assert response.status_code == 200
+    assert "Item #1" in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_items_not_found_by_tag(client):
+    """Filter by non-existent tag; a message should be shown."""
+    item1 = Goods.objects.create(
+        title="Item #1",
+    )
+
+    response = client.get(reverse('main:goods-list') + '?tag=non_existent_tag')
+    assert response.status_code == 200
+    assert "No items found with tags <strong>[&#x27;non_existent_tag&#x27;]" in response.rendered_content
+
+
+@pytest.mark.django_db
+def test_chaining_tags(client):
+    """Filter items by multiple tags."""
+    tag1 = Tag.objects.create(name="tag_1")
+    tag2 = Tag.objects.create(name="tag_2")
+    item1 = Goods.objects.create(
+        title="Item #1",
+    )
+    item1.tags.add(tag1, tag2)
+
+    response = client.get(reverse('main:goods-list') + f'?tag={tag1.name}&tag={tag2.name}')
+    assert response.status_code == 200
+    assert "Item #1" in response.rendered_content
