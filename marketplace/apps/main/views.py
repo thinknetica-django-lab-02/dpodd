@@ -56,6 +56,9 @@ class GoodsDetailView(DetailView):
     model = Goods
     template_name = 'main/goods_detail.html'
 
+    def get_object(self, queryset=None):
+        return Goods.objects.get(slug=self.kwargs.get("slug"))
+
     def get(self, *args, **kwargs):
         # update views count
         object = self.get_object()
