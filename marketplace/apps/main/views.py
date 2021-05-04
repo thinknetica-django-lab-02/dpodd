@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from django.db.models import Q
+from django.db.models import Q, F
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -55,6 +55,13 @@ class GoodsDetailView(DetailView):
     """A detail view for an item of goods."""
     model = Goods
     template_name = 'main/goods_detail.html'
+
+    def get(self, *args, **kwargs):
+        # update views count
+        object = self.get_object()
+        object.viewed = F('viewed') + 1
+        object.save()
+        return super().get(self, *args, **kwargs)
 
 
 class AddItemOfGoodsView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
