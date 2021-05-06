@@ -53,6 +53,7 @@ SOCIALACCOUNT_PROVIDERS = {
 REDIS_HOST = '0.0.0.0'
 REDIS_PORT = '6379'
 
+# Cache backend
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -63,6 +64,8 @@ CACHES = {
     }
 }
 
+# Cache time to live is 5 minutes
+CACHE_TTL = 60 * 5
 
 CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}

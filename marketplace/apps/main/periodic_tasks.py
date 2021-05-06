@@ -36,7 +36,7 @@ def notify_subscribers_on_the_new_goods():
 
 
 def start_scheduler():
-    logging.warning(f'Starting background scheduler.')
+    logging.warning('Starting background scheduler.')
     scheduler = BackgroundScheduler(timezone=UTC)
 
     every_friday = CronTrigger(day_of_week=5, hour=12, timezone=UTC)
