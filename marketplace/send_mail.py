@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 
 
-def send_mail_2_all_users(subject: str, message: str):
+def send_mail_2_all_users(subject: str, message: str) -> None:
     """Send mail to all registered users who specified the email."""
     User = get_user_model()
 
@@ -19,7 +19,7 @@ def send_mail_2_all_users(subject: str, message: str):
             )
 
 
-def send_welcome_letter():
+def send_welcome_letter() -> None:
     """Send welcome letter to all users."""
     subject = "Welcome to <Marketplace>!"
     msg = "We hope you will enjoy everything."
