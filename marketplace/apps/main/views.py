@@ -1,3 +1,5 @@
+from typing import List, Any
+
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -6,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
+from django.db.models import QuerySet
+from django.db import models
 
 
 from apps.main.models import Goods, Tag
@@ -34,7 +38,7 @@ class GoodsItemsList(ListView):
         return context
 
     @staticmethod
-    def filter_queryset_by_tags(queryset, tag_names_list):
+    def filter_queryset_by_tags(queryset: QuerySet[models.Model], tag_names_list: List[str]) -> QuerySet[models.Model]:
         """Filters items in the queryset which have all of the tags in `tag_name_list`."""
         tag_queries = [Q(tags__name=tag) for tag in tag_names_list]
 
@@ -56,15 +60,15 @@ class GoodsDetailView(DetailView):
     model = Goods
     template_name = 'main/goods_detail.html'
 
-    def get_object(self, queryset=None):
+    def get_object(self, *args: Any, **kwargs: Any) -> Goods:
         return Goods.objects.get(slug=self.kwargs.get("slug"))
 
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # update views count
         object = self.get_object()
         object.viewed = F('viewed') + 1
         object.save()
-        return super().get(self, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
 
 class AddItemOfGoodsView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
