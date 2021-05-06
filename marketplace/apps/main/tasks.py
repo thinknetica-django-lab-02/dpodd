@@ -1,12 +1,15 @@
 from datetime import datetime, timedelta
+import random
+import json
 
 from django.core.mail import send_mail
 from django.conf import settings
-
 from pytz import UTC
+import vonage
 
 from config import celery_app
-from apps.main.models import Goods, Subscriber
+from config.settings.base import env
+from apps.main.models import Goods, Subscriber, SMSLog
 
 
 @celery_app.task()
@@ -45,3 +48,26 @@ def notify_subscribers_week_additions():
                     [subscriber.user.email],
                     fail_silently=True
                 )
+
+
+@celery_app.task()
+def send_test_sms():
+    """Send test sms to developer's number via Vonage. """
+
+    client = vonage.Client(key=env('VONAGE_API_KEY'), secret=env('VONAGE_API_SECRET'))
+    sms = vonage.Sms(client)
+
+    # generate verification code
+    code = random.randint(1000, 9999)
+
+    # send sms
+    responseData = sms.send_message(
+        {
+            "from": settings.SMS_FROM_DEFAULT,
+            "to": settings.SMS_PHONE_NUMBER_TEST,
+            "text": f"You verification code is {code}.",
+        }
+    )
+    # !
+    smslog = SMSLog(code=code, response=json.dumps(responseData))
+    smslog.save()
